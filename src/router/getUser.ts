@@ -39,7 +39,13 @@ const getUser = async (req: Request<{ id: string }, any, {}, {}>, res: Response)
         return;
     }
 
-    res.json({success: true, user});
+    res.json({
+        success: true, user: {
+            ...user,
+            position_id: user.position.id,
+            position: user.position.name,
+        }
+    });
 };
 
 export default getUser;
