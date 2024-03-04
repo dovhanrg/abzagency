@@ -2,9 +2,26 @@ import {Request, Response} from "express";
 import {AppDataSource} from "../data-source";
 import {User} from "../entity/User";
 
-const getUsers = async (req: Request, res: Response) => {
-    const users = await AppDataSource.manager.find(User);
-    res.json({success: true, users});
+const DEFAULT_COUNT_PARAM = 6;
+const DEFAULT_OFFSET_PARAM = 0;
+
+type RequestType = {
+    offset?: string;
+    page?: string;
+    count?: string;
+}
+const getUsers = async (req: Request<{}, any, {}, RequestType>, res: Response) => {
+    const { offset, page, count } = req.query;
+
+    const users = await AppDataSource.manager.find(User, {
+        order: {
+            created_at: 'ASC',
+        },
+        skip: Math.max(Number(offset ?? page ?? DEFAULT_OFFSET_PARAM), DEFAULT_OFFSET_PARAM),
+        take: Math.max(Number(count ?? DEFAULT_COUNT_PARAM), DEFAULT_COUNT_PARAM),
+    });
+
+    res.json({success: true, query: req.query, params: req.params, users});
 };
 
 export default getUsers;
