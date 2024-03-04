@@ -1,4 +1,5 @@
-import {Column, Entity, PrimaryGeneratedColumn} from "typeorm";
+import {Column, Entity, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
+import {Position} from "./Position";
 
 
 @Entity()
@@ -8,15 +9,9 @@ export class User {
     id: number;
 
     @Column({
-        length: 60,
+        length: 100,
     })
-    first_name: string;
-
-    @Column({
-        length: 60,
-        nullable: true,
-    })
-    last_name: string;
+    name: string;
 
     @Column({
         length: 250,
@@ -31,8 +26,8 @@ export class User {
     @Column({length: 20})
     phone: string;
 
-    @Column()
-    position_id: number;
+    @ManyToOne(() => Position, (position) => position.name)
+    position: Position;
 
     @Column({ type: "uuid", nullable: true })
     image_file_name: string;

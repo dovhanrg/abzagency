@@ -2,8 +2,12 @@
 GET http://localhost:3000/
 Accept: application/json
 
-### GET request with a header
+### GET request users, with a header
 GET http://localhost:3000/api/users?page=1&count=6&offset=-1
+Accept: application/json
+
+### GET request user by id, with a header
+GET http://localhost:3000/api/users/1
 Accept: application/json
 
 

@@ -2,11 +2,9 @@ import express from "express";
 import {AppDataSource} from "./data-source";
 import router from "./router";
 import initUsers from "./seeds/initUsers";
-import initPositions from "./seeds/initPositions";
 
 AppDataSource.initialize().then(async (data) => {
     await initUsers();
-    await initPositions();
 })
     .catch(error => console.log('ERROR: ', error));
 

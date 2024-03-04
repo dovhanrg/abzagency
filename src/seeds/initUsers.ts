@@ -1,27 +1,35 @@
 import {User} from "../entity/User";
 import {faker} from "@faker-js/faker";
 import {AppDataSource} from "../data-source";
+import {Position} from "../entity/Position";
 
 
-const createRandomUser = (): Omit<User, 'id' | 'image_file_name'> => {
-    return {
-        first_name: faker.person.firstName(),
-        last_name: faker.person.lastName(),
-        email: faker.internet.email(),
-        password: faker.internet.password(),
-        created_at: new Date().toISOString(),
-        position_id: faker.number.int({ min: 1, max: 10}),
-        phone: faker.helpers.fromRegExp('38050[0-9]{7}'),
-    }
-}
 const initUsers = async () => {
     const userRepository = AppDataSource.getRepository(User);
-    const oldUsers = await userRepository.find();
-    if (oldUsers && oldUsers.length) {
+    const isUsersExists = await userRepository.find({take: 1});
+    if (isUsersExists && isUsersExists.length) {
         return;
     }
+    const positionsRepository = AppDataSource.getRepository(Position);
+    const newPositions = new Array(10).fill(null).map(() => {
+        const position = new Position();
+        position.name = faker.person.jobTitle();
+        return position;
+    });
 
-    const users = new Array(45).fill(null).map(() => createRandomUser());
+    await positionsRepository.save(newPositions);
+
+    const users = new Array(45).fill(null).map((_, index) => {
+        const user = new User();
+        user.name = faker.person.firstName();
+        user.email = faker.internet.email();
+        user.password = faker.internet.password();
+        user.created_at = new Date().toISOString();
+        user.phone = faker.helpers.fromRegExp('38050[0-9]{7}');
+        user.position = newPositions[(index % newPositions.length)];
+
+        return user;
+    });
     await userRepository.save(users);
 
     console.log('Users have been saved to DB');
