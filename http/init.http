@@ -1,0 +1,12 @@
+### GET request with a header
+GET http://localhost:3000/
+Accept: application/json
+
+### GET request with a header
+GET http://localhost:3000/api/users
+Accept: application/json
+
+
+### Send POST request with json body
+POST http://localhost:3000/users
+Content-Type: application/json
