@@ -3,14 +3,22 @@ GET http://localhost:3000/
 Accept: application/json
 
 ### GET request users, with a header
-GET http://localhost:3000/api/users?page=1&count=6&offset=-1
+GET http://localhost:3000/api/v1/users?page=1&count=6&offset=-1
 Accept: application/json
 
 ### GET request user by id, with a header
-GET http://localhost:3000/api/users/1
+GET http://localhost:3000/api/v1/users/44
 Accept: application/json
 
 
 ### Send POST request with json body
-POST http://localhost:3000/users
+POST http://localhost:3000/api/v1/users
 Content-Type: application/json
+
+### GET request positions, with a header
+GET http://localhost:3000/api/v1/positions
+Accept: application/json
+
+### GET request positions, with a header
+GET http://localhost:3000
+Accept: application/json

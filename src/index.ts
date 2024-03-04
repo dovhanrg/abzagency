@@ -15,7 +15,7 @@ const app = express();
 app.use(express.json());
 app.use(express.text());
 
-app.use('/api/', router);
+app.use('/api/v1/', router);
 
 
 app.listen(port, () => {
