@@ -11,17 +11,28 @@ type RequestType = {
     count?: string;
 }
 const getUsers = async (req: Request<{}, any, {}, RequestType>, res: Response) => {
-    const { offset, page, count } = req.query;
+    const {offset, page, count} = req.query;
 
-    const users = await AppDataSource.manager.find(User, {
+    const userRepository = AppDataSource.getRepository(User);
+
+    const users = await userRepository.find({
         order: {
             created_at: 'ASC',
         },
         skip: Math.max(Number(offset ?? page ?? DEFAULT_OFFSET_PARAM), DEFAULT_OFFSET_PARAM),
         take: Math.max(Number(count ?? DEFAULT_COUNT_PARAM), DEFAULT_COUNT_PARAM),
-    });
+        relations: ['position'],
+    })
+        .then((usersArray) => usersArray.map((user) => {
+            const {position, ...rest} = user;
+            return {
+                ...rest,
+                position_id: position.id,
+                position: position.name,
+            };
+        }));
 
-    res.json({success: true, query: req.query, params: req.params, users});
+    res.json({success: true, users});
 };
 
 export default getUsers;
