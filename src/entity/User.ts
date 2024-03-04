@@ -8,20 +8,18 @@ export class User {
     id: number;
 
     @Column({
-        length: 20,
+        length: 60,
     })
     first_name: string;
 
     @Column({
-        length: 20,
+        length: 60,
+        nullable: true,
     })
     last_name: string;
 
-    @Column("date", {nullable: true})
-    birthday: string;
-
     @Column({
-        length: 50,
+        length: 250,
     })
     email: string;
 
@@ -30,17 +28,11 @@ export class User {
     })
     password: string;
 
-    @Column({
-        length: 100,
-        nullable: true,
-    })
-    city: string;
+    @Column({length: 20})
+    phone: string;
 
-    @Column({
-        length: 2,
-        nullable: true,
-    })
-    country_code: string;
+    @Column()
+    position_id: number;
 
     @Column({ type: "uuid", nullable: true })
     image_file_name: string;

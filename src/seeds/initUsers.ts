@@ -1,7 +1,6 @@
-import {User} from "./entity/User";
+import {User} from "../entity/User";
 import {faker} from "@faker-js/faker";
-import moment from "moment/moment";
-import {AppDataSource} from "./data-source";
+import {AppDataSource} from "../data-source";
 
 
 const createRandomUser = (): Omit<User, 'id' | 'image_file_name'> => {
@@ -9,11 +8,10 @@ const createRandomUser = (): Omit<User, 'id' | 'image_file_name'> => {
         first_name: faker.person.firstName(),
         last_name: faker.person.lastName(),
         email: faker.internet.email(),
-        city: faker.location.city(),
-        country_code: faker.location.countryCode(),
         password: faker.internet.password(),
         created_at: new Date().toISOString(),
-        birthday: moment(faker.date.birthdate()).format('YYYYMMDD'),
+        position_id: faker.number.int({ min: 1, max: 10}),
+        phone: faker.helpers.fromRegExp('38050[0-9]{7}'),
     }
 }
 const initUsers = async () => {

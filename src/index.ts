@@ -1,12 +1,15 @@
 import express from "express";
 import {AppDataSource} from "./data-source";
 import router from "./router";
-import initUsers from "./initUsers";
+import initUsers from "./seeds/initUsers";
+import initPositions from "./seeds/initPositions";
 
-AppDataSource.initialize().then((data) => {
-    initUsers();
+AppDataSource.initialize().then(async (data) => {
+    await initUsers();
+    await initPositions();
 })
     .catch(error => console.log('ERROR: ', error));
+
 
 const port = 3000;
 const app = express();
