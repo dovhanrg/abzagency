@@ -3,6 +3,8 @@ import {z} from "zod";
 import {AppDataSource} from "../data-source";
 import {User} from "../entity/User";
 import {Position} from "../entity/Position";
+import {Token} from "../entity/Token";
+import moment from "moment/moment";
 
 const nameSchema = z.string()
     .min(2, 'Name must be not less than 2 characters')
@@ -19,6 +21,30 @@ const userSchema = z.object({
 });
 
 const postUsers = async (req: Request<{}, any, z.infer<typeof userSchema>, {}>, res: Response) => {
+    const token = req.headers['token'] as string;
+    if (!token) {
+        res.status(401).json({
+            success: false,
+            message: 'The token is mandatory.',
+        });
+        return;
+    }
+    const tokenRepository = AppDataSource.getRepository(Token);
+
+    const isTokenExists = await tokenRepository.findOne({
+        where: {
+            token: token,
+        }
+    });
+
+    if (!isTokenExists || !moment(isTokenExists.created_at).add(40, "m").isAfter(new Date().toISOString())) {
+        res.status(401).json({
+            success: false,
+            message: 'The token expired',
+        });
+        return;
+    }
+
     const body = req.body;
     const parsedResult = userSchema.safeParse(body);
     console.log(parsedResult);
