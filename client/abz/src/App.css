@@ -74,3 +74,18 @@
   text-decoration: none;
   cursor: pointer;
 }
+
+.usersContainer {
+}
+
+.userWrapper {
+  border: 1px solid black;
+  width: 100%;
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+}

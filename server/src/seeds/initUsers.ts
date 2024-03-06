@@ -25,8 +25,9 @@ const initUsers = async () => {
         user.email = faker.internet.email();
         user.password = faker.internet.password();
         user.created_at = new Date().toISOString();
-        user.phone = faker.helpers.fromRegExp('38050[0-9]{7}');
+        user.phone = faker.helpers.fromRegExp('+38050[0-9]{7}');
         user.position = newPositions[(index % newPositions.length)];
+        user.image_file_name = 'faf3cb29-f2a3-4715-90a8-9b43a0371d42';
 
         return user;
     });

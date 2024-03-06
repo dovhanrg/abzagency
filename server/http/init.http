@@ -3,7 +3,7 @@ GET http://localhost:8080/
 Accept: application/json
 
 ### GET request users, with a header
-GET http://localhost:8080/api/v1/users?page=1&count=6&offset=-1
+GET http://localhost:8080/api/v1/users?page=1&count=6
 Accept: application/json
 
 ### GET request user by id, with a header
@@ -31,3 +31,7 @@ Accept: application/json
 ### GET request token
 GET http://localhost:8080/api/v1/token
 Accept: application/json
+
+### GET request image
+GET http://localhost:8080/static/faf3cb29-f2a3-4715-90a8-9b43a0371d42.jpg
+Accept: image/*

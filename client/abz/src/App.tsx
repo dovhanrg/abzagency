@@ -1,7 +1,12 @@
-import React, {FormEvent, useEffect, useRef, useState} from 'react';
+import React, {FormEvent, MouseEventHandler, useEffect, useRef, useState} from 'react';
 
 import './App.css';
 import {getFetch, postFetch} from "./http/fetchImpl";
+
+const IP_ADDR = process.env.IP_ADDR;
+const API_PORT = process.env.API_PORT;
+export const api_url = `https://${IP_ADDR}:${API_PORT}/api/v1/users?page=0&count=5`;
+const initialLink = process.env.NODE_ENV === 'development' ? `/api/v1/users?page=0&count=5` : api_url;
 
 type User = {
     position_id: number,
@@ -9,18 +14,55 @@ type User = {
     id: number,
     name: string,
     email: string,
-    password: string,
     phone: string,
-    image_file_name: string,
+    photo: string,
     created_at: string
 };
 
 function App() {
     const refModal = useRef<HTMLDivElement>(null);
     const [positions, setPositions] = useState<{ name: string, id: number }[]>([]);
-    const [users, setUsers] = useState<User[]>();
-    const [token, setToken] = useState<string>();
-    // const [formData, setFormData] = useState<FormData>();
+    const [users, setUsers] = useState<User[]>([]);
+    const [remoteToken, setRemoteToken] = useState<string>();
+    const [links, setLinks] = useState<{ prevLink: null | string, nextLink: null | string }>({
+        prevLink: null,
+        nextLink: initialLink
+    });
+    const [currentUsersRequest, setCurrentUsersRequest] = useState({
+        page: 0,
+        offset: 0,
+        count: 5,
+    });
+
+    const fetchUsers = (link?: string | null) => {
+        if (link) {
+            getFetch<{
+                success: boolean,
+                page: number,
+                total_users: number,
+                total_pages: number,
+                count: number,
+                links: {
+                    next_url: string | null,
+                    prev_url: string | null,
+                },
+                users: User[],
+            }>(link)
+                .then(data => {
+                    if (data.success) {
+                        setUsers(data.users)
+                        setLinks({
+                            nextLink: data.links.next_url,
+                            prevLink: data.links.prev_url,
+                        });
+                    }
+                });
+        }
+    }
+
+    useEffect(() => {
+      fetchUsers(links.nextLink);
+    }, []);
 
     useEffect(() => {
         window.onclick = function (event) {
@@ -29,9 +71,9 @@ function App() {
             }
         }
         getFetch<{
-            success: boolean,
-            positions: { name: string, id: number }[]
-        }>('/api/v1/positions').then((data) => data.success && setPositions(data.positions))
+            success: boolean;
+            positions: { name: string, id: number }[];
+        }>('/api/v1/positions').then((data) => data.success && setPositions(data.positions));
     }, []);
 
     const registerUser = async (formData: FormData, token: string) => {
@@ -60,24 +102,30 @@ function App() {
         event.preventDefault();
 
         const formData = new FormData(event.currentTarget);
-        console.log(token, formData);
 
-        if (!token) {
-            const result = await getFetch<{ success: boolean; token: string }>('/api/v1/token')
+        if (!remoteToken) {
+            await getFetch<{ success: boolean; token: string }>('/api/v1/token')
                 .then((result) => {
                     if (result.success) {
-                        setToken(result.token);
+                        setRemoteToken(result.token);
                         return result.token;
                     }
                 }).then((freshToken) => {
-                    console.log(token, freshToken);
                     if (freshToken) {
                         registerUser(formData, freshToken);
                     }
                 });
-            console.log(result, token);
-
         }
+    }
+
+    const onNextClick = (event: { preventDefault: () => void; }) => {
+        event.preventDefault();
+        fetchUsers(links.nextLink);
+    }
+
+    const onPrevClick = (event: { preventDefault: () => void; }) => {
+        event.preventDefault();
+        fetchUsers(links.prevLink);
     }
 
     return (
@@ -90,7 +138,6 @@ function App() {
             </button>
 
             <div id="myModal" className="modal" ref={refModal}>
-
                 <div className="modal-content">
                     <span className="close" onClick={() => {
                         if (refModal.current) {
@@ -134,7 +181,27 @@ function App() {
                         </form>
                     </div>
                 </div>
-
+            </div>
+            <div className="container">
+                <div>
+                    <a href={links.prevLink ?? undefined} onClick={onPrevClick}>Prev</a>
+                </div>
+                <div className="usersContainer">
+                    {users.map((user) => {
+                        return (<div className="userWrapper">
+                            <p>Name: {user.name}</p>
+                            <p>Email: {user.email}</p>
+                            <p>Phone: {user.phone}</p>
+                            <p>Position: {user.position}</p>
+                            <p>
+                                <img src={user.photo} alt="photo"/>
+                            </p>
+                        </div>);
+                    })}
+                </div>
+                <div>
+                    <a href={links.nextLink ?? undefined} onClick={onNextClick}>Next</a>
+                </div>
             </div>
         </div>
     );

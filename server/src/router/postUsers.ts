@@ -6,6 +6,7 @@ import {Position} from "../entity/Position";
 import {Token} from "../entity/Token";
 import moment from "moment/moment";
 import services from '../services'
+import path from "node:path";
 
 
 const postUsers = async (req: Request<{}, any, z.infer<typeof services.validatorService.userSchema>, {}>, res: Response) => {
@@ -85,7 +86,7 @@ const postUsers = async (req: Request<{}, any, z.infer<typeof services.validator
         return;
     }
 
-    await services.imageResizerService(req.file.filename);
+    services.imageResizerService(req.file.filename);
 
     const user = new User();
     user.position = position;
@@ -94,7 +95,7 @@ const postUsers = async (req: Request<{}, any, z.infer<typeof services.validator
     user.phone = parsedResult.data.phone;
     user.password = parsedResult.data.password;
     user.created_at = new Date().toISOString();
-    user.image_file_name = req.file.filename;
+    user.image_file_name = path.parse(req.file.filename).name;
 
     const savedUser = await userRepository.save(user);
 
