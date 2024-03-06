@@ -6,11 +6,14 @@ import {getFetch, postFetch} from "./http/fetchImpl";
 const IP_ADDR = process.env.REACT_APP_IP_ADDR;
 const API_PORT = process.env.REACT_APP_API_PORT;
 
-console.log(IP_ADDR, API_PORT, process.env.NODE_ENV);
+export const api_url = process.env.NODE_ENV === 'development' ? '' : `http://${IP_ADDR}:${API_PORT}`;
+const initialLink = `${api_url}/api/v1/users?page=0&count=5`;
+const positionsUrl = `${api_url}/api/v1/positions`;
+const postUsersUrl = `${api_url}/api/v1/users`;
+const tokenUrl = `${api_url}/api/v1/token`;
 
-// export const api_url = `/api/v1/users?page=0&count=5`;
-// const initialLink = process.env.NODE_ENV === 'development' ? `/api/v1/users?page=0&count=5` : api_url;
-const initialLink = `http://164.92.235.193:4000/api/v1/users?page=0&count=5`;
+console.log(api_url);
+const getPhotoSrcUrl = (src: string) => `${api_url}${src}`;
 
 type User = {
     position_id: number,
@@ -72,7 +75,7 @@ function App() {
         getFetch<{
             success: boolean;
             positions: { name: string, id: number }[];
-        }>('http://164.92.235.193:4000/api/v1/positions').then((data) => data.success && setPositions(data.positions));
+        }>(positionsUrl).then((data) => data.success && setPositions(data.positions));
     }, []);
 
     const registerUser = async (formData: FormData, token: string) => {
@@ -81,7 +84,7 @@ function App() {
             success: boolean,
             users: User[],
             issues?: string[],
-        }>('http://164.92.235.193:4000/api/v1/users', {token}, formData)
+        }>(postUsersUrl, {token}, formData)
             .then(data => {
                 if (!data.success) {
                     if (data.issues) {
@@ -103,17 +106,19 @@ function App() {
         const formData = new FormData(event.currentTarget);
 
         if (!remoteToken) {
-            await getFetch<{ success: boolean; token: string }>('http://164.92.235.193:4000/api/v1/token')
+            await getFetch<{ success: boolean; token: string }>(tokenUrl)
                 .then((result) => {
                     if (result.success) {
                         setRemoteToken(result.token);
                         return result.token;
                     }
-                }).then((freshToken) => {
+                }).then(async (freshToken) => {
                     if (freshToken) {
-                        registerUser(formData, freshToken);
+                        await registerUser(formData, freshToken);
                     }
                 });
+        } else {
+            await registerUser(formData, remoteToken);
         }
     }
 
@@ -193,7 +198,7 @@ function App() {
                             <p>Phone: {user.phone}</p>
                             <p>Position: {user.position}</p>
                             <p>
-                                <img src={'http://164.92.235.193:4000' + user.photo} alt="photo"/>
+                                <img src={getPhotoSrcUrl(user.photo)} alt="photo"/>
                             </p>
                         </div>);
                     })}
