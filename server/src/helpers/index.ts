@@ -10,7 +10,6 @@ export const getTotalPages = (totalUsers: number, count?: string) => {
 
 export const getNextPageUrl = (totalUsers: number, currentPage?: string, count?: string) => {
     const page = Number.isNaN(Number(currentPage)) ? 1 : Number(currentPage);
-    console.log(getTotalPages(totalUsers, count), page);
 
     const {totalPages, remainder} = getTotalPages(totalUsers, count);
     return totalPages > page + 1 || totalPages === page + 1 && remainder !== 0

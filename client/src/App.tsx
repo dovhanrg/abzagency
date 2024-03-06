@@ -10,7 +10,7 @@ console.log(IP_ADDR, API_PORT, process.env.NODE_ENV);
 
 // export const api_url = `/api/v1/users?page=0&count=5`;
 // const initialLink = process.env.NODE_ENV === 'development' ? `/api/v1/users?page=0&count=5` : api_url;
-const initialLink = `/api/v1/users?page=0&count=5`;
+const initialLink = `http://164.92.235.193:4000/api/v1/users?page=0&count=5`;
 
 type User = {
     position_id: number,
@@ -72,7 +72,7 @@ function App() {
         getFetch<{
             success: boolean;
             positions: { name: string, id: number }[];
-        }>('/api/v1/positions').then((data) => data.success && setPositions(data.positions));
+        }>('http://164.92.235.193:4000/api/v1/api/v1/positions').then((data) => data.success && setPositions(data.positions));
     }, []);
 
     const registerUser = async (formData: FormData, token: string) => {
@@ -81,7 +81,7 @@ function App() {
             success: boolean,
             users: User[],
             issues?: string[],
-        }>('/api/v1/users', {token}, formData)
+        }>('http://164.92.235.193:4000/api/v1/users', {token}, formData)
             .then(data => {
                 if (!data.success) {
                     if (data.issues) {
@@ -103,7 +103,7 @@ function App() {
         const formData = new FormData(event.currentTarget);
 
         if (!remoteToken) {
-            await getFetch<{ success: boolean; token: string }>('/api/v1/token')
+            await getFetch<{ success: boolean; token: string }>('http://164.92.235.193:4000/api/v1/token')
                 .then((result) => {
                     if (result.success) {
                         setRemoteToken(result.token);
