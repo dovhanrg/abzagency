@@ -193,7 +193,7 @@ function App() {
                             <p>Phone: {user.phone}</p>
                             <p>Position: {user.position}</p>
                             <p>
-                                <img src={user.photo} alt="photo"/>
+                                <img src={'http://164.92.235.193:4000' + user.photo} alt="photo"/>
                             </p>
                         </div>);
                     })}
