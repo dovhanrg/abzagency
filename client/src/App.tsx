@@ -65,7 +65,7 @@ function App() {
 
     useEffect(() => {
         window.onclick = function (event) {
-            if (refModal.current && event.target == refModal.current) {
+            if (refModal.current && event.target === refModal.current) {
                 refModal.current.style.display = "none";
             }
         }
@@ -145,29 +145,29 @@ function App() {
                     }}>&times;</span>
                     <div>
                         <form id="form" encType="multipart/form-data" onSubmit={onFormSubmit}>
-                            <label htmlFor="name">Name</label>
+                            <label>Name</label>
                             <p>
                                 <input type="text" name="name"/>
                             </p>
-                            <label htmlFor="password">Password</label>
+                            <label>Password</label>
                             <p>
                                 <input type="password" name="password"/>
                             </p>
-                            <label htmlFor="email">Email</label>
+                            <label>Email</label>
                             <p>
                                 <input type="text" name="email"/>
                             </p>
-                            <label htmlFor="phone">Phone (format +380970001010)</label>
+                            <label>Phone (format +380970001010)</label>
                             <p>
                                 <input type="text" name="phone" placeholder="+380970001010"/>
                             </p>
-                            <label htmlFor="photo">Photo</label>
+                            <label>Photo</label>
                             <p>
                                 <input type="file" name="photo" accept="image/jpeg"
                                        placeholder="Select photo ..."/>
                             </p>
                             <p>
-                                <label htmlFor="position_id">Position</label>
+                                <label>Position</label>
                                 <select name="position_id">
                                     {positions.map(position => {
                                         return (<option value={position.id} label={position.name}/>);
