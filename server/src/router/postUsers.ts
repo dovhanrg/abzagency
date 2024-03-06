@@ -23,13 +23,13 @@ const postUsers = async (req: Request<{}, any, z.infer<typeof services.validator
     }
     const tokenRepository = AppDataSource.getRepository(Token);
 
-    const isTokenExists = await tokenRepository.findOne({
+    const oldToken = await tokenRepository.findOne({
         where: {
             token: token,
         }
     });
 
-    if (!isTokenExists || !moment(isTokenExists.created_at).add(40, "m").isAfter(new Date().toISOString())) {
+    if (!oldToken || !moment(oldToken.created_at).add(40, "m").isAfter(new Date().toISOString())) {
         res.status(401).json({
             success: false,
             message: 'The token expired',
