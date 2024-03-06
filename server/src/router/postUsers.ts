@@ -5,22 +5,14 @@ import {User} from "../entity/User";
 import {Position} from "../entity/Position";
 import {Token} from "../entity/Token";
 import moment from "moment/moment";
+import services from '../services'
 
-const nameSchema = z.string()
-    .min(2, 'Name must be not less than 2 characters')
-    .max(20, 'Name must be max of 20 characters');
-const uaPhoneNumberRegex = new RegExp(/^\+380(50|99|97|66|93|63|77|67|98)\d{7}$/);
 
-const userSchema = z.object({
-    name: nameSchema,
-    email: z.string().trim().max(250, 'Max email length is 250 characters').email({message: 'Invalid email address'}),
-    phone: z.string().regex(uaPhoneNumberRegex, 'Invalid number. Number must be in format +380000000000'),
-    position_id: z.number().positive(),
-    password: z.string().min(4).max(20),
-    // photo
-});
-
-const postUsers = async (req: Request<{}, any, z.infer<typeof userSchema>, {}>, res: Response) => {
+const postUsers = async (req: Request<{}, any, z.infer<typeof services.validatorService.userSchema>, {}>, res: Response) => {
+    if (!req.file) {
+        res.status(422).json({success: false, message: 'Image with extension jpg or jpeg is mandatory'});
+        return;
+    }
     const token = req.headers['token'] as string;
     if (!token) {
         res.status(401).json({
@@ -46,8 +38,8 @@ const postUsers = async (req: Request<{}, any, z.infer<typeof userSchema>, {}>, 
     }
 
     const body = req.body;
-    const parsedResult = userSchema.safeParse(body);
-    console.log(parsedResult);
+    const parsedResult = services.validatorService.postUsersValidator(body);
+
     if (!parsedResult.success) {
         res
             .status(422)
@@ -93,6 +85,8 @@ const postUsers = async (req: Request<{}, any, z.infer<typeof userSchema>, {}>, 
         return;
     }
 
+    await services.imageResizerService(req.file.filename);
+
     const user = new User();
     user.position = position;
     user.email = parsedResult.data.email;
@@ -100,7 +94,7 @@ const postUsers = async (req: Request<{}, any, z.infer<typeof userSchema>, {}>, 
     user.phone = parsedResult.data.phone;
     user.password = parsedResult.data.password;
     user.created_at = new Date().toISOString();
-    // user.image_file_name
+    user.image_file_name = req.file.filename;
 
     const savedUser = await userRepository.save(user);
 
