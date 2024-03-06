@@ -28,6 +28,12 @@ app.use(express.text());
 
 app.use('/static', express.static(path.join(__dirname, '..', 'uploads/cropped')));
 
+app.use(express.static(path.join(__dirname, '..', '..', 'client/abz/build')));
+// console.log(path.join(__dirname, '..', '..', 'client/abz/build'));
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', '..', 'client/abz/build', 'index.html'));
+});
+
 app.use('/api/v1/', router);
 
 
@@ -35,7 +41,11 @@ app.use((err: multer.MulterError | Record<string, unknown>, req: Request, res: R
     if (err instanceof multer.MulterError) {
         // A Multer error occurred when uploading.
         console.log(err);
-        res.status(500).json({success: false, message: err.message, issues: ['File must be size in under 5mb', 'File must be with extension .jpg or .jpeg']});
+        res.status(500).json({
+            success: false,
+            message: err.message,
+            issues: ['File must be size in under 5mb', 'File must be with extension .jpg or .jpeg']
+        });
     } else if (err instanceof Error) {
         console.log(err);
         res.status(500).json({success: false, message: err.message});
