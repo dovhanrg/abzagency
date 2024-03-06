@@ -5,6 +5,7 @@ import initUsers from "./seeds/initUsers";
 import * as fs from "fs";
 import multer from "multer";
 import path from "node:path";
+import cors from 'cors';
 
 AppDataSource.initialize().then(async (data) => {
     await initUsers();
@@ -25,6 +26,7 @@ if (!fs.existsSync(uploadOriginalImageDir) || !fs.existsSync(uploadCroppedImageD
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(express.text());
+app.use(cors());
 
 app.use('/static', express.static(path.join(__dirname, '..', 'uploads/cropped')));
 
