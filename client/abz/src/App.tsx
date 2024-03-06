@@ -1,4 +1,4 @@
-import React, {FormEvent, MouseEventHandler, useEffect, useRef, useState} from 'react';
+import React, {FormEvent, useEffect, useRef, useState} from 'react';
 
 import './App.css';
 import {getFetch, postFetch} from "./http/fetchImpl";
@@ -27,11 +27,6 @@ function App() {
     const [links, setLinks] = useState<{ prevLink: null | string, nextLink: null | string }>({
         prevLink: null,
         nextLink: initialLink
-    });
-    const [currentUsersRequest, setCurrentUsersRequest] = useState({
-        page: 0,
-        offset: 0,
-        count: 5,
     });
 
     const fetchUsers = (link?: string | null) => {
