@@ -14,7 +14,7 @@ AppDataSource.initialize().then(async (data) => {
 
 export const uploadOriginalImageDir = './uploads/original/';
 export const uploadCroppedImageDir = './uploads/cropped/';
-const port = 8080;
+const port = 4000;
 const app = express();
 
 if (!fs.existsSync(uploadOriginalImageDir) || !fs.existsSync(uploadCroppedImageDir)) {
@@ -28,11 +28,7 @@ app.use(express.text());
 
 app.use('/static', express.static(path.join(__dirname, '..', 'uploads/cropped')));
 
-app.use(express.static(path.join(__dirname, '..', '..', 'client/abz/build')));
-// console.log(path.join(__dirname, '..', '..', 'client/abz/build'));
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', '..', 'client/abz/build', 'index.html'));
-});
+console.log(path.join(__dirname, '..', '..', 'client/build', 'index.html'));
 
 app.use('/api/v1/', router);
 

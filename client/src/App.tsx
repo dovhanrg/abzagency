@@ -3,10 +3,14 @@ import React, {FormEvent, useEffect, useRef, useState} from 'react';
 import './App.css';
 import {getFetch, postFetch} from "./http/fetchImpl";
 
-const IP_ADDR = process.env.IP_ADDR;
-const API_PORT = process.env.API_PORT;
-export const api_url = `https://${IP_ADDR}:${API_PORT}/api/v1/users?page=0&count=5`;
-const initialLink = process.env.NODE_ENV === 'development' ? `/api/v1/users?page=0&count=5` : api_url;
+const IP_ADDR = process.env.REACT_APP_IP_ADDR;
+const API_PORT = process.env.REACT_APP_API_PORT;
+
+console.log(IP_ADDR, API_PORT, process.env.NODE_ENV);
+
+// export const api_url = `/api/v1/users?page=0&count=5`;
+// const initialLink = process.env.NODE_ENV === 'development' ? `/api/v1/users?page=0&count=5` : api_url;
+const initialLink = `/api/v1/users?page=0&count=5`;
 
 type User = {
     position_id: number,

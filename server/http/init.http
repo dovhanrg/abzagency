@@ -1,18 +1,18 @@
 ### GET request with a header
-GET http://localhost:8080/
+GET http://localhost:4000/
 Accept: application/json
 
 ### GET request users, with a header
-GET http://localhost:8080/api/v1/users?page=1&count=6
+GET http://localhost:4000/api/v1/users?page=1&count=6
 Accept: application/json
 
 ### GET request user by id, with a header
-GET http://localhost:8080/api/v1/users/44
+GET http://localhost:4000/api/v1/users/44
 Accept: application/json
 
 
 ### Send POST request with json body
-POST http://localhost:8080/api/v1/users
+POST http://localhost:4000/api/v1/users
 Content-Type: application/json
 Token: b22b3ed3-9d51-43a8-bb97-347262aeeb50
 
@@ -25,13 +25,13 @@ Token: b22b3ed3-9d51-43a8-bb97-347262aeeb50
 }
 
 ### GET request positions, with a header
-GET http://localhost:8080/api/v1/positions
+GET http://localhost:4000/api/v1/positions
 Accept: application/json
 
 ### GET request token
-GET http://localhost:8080/api/v1/token
+GET http://localhost:4000/api/v1/token
 Accept: application/json
 
 ### GET request image
-GET http://localhost:8080/static/faf3cb29-f2a3-4715-90a8-9b43a0371d42.jpg
-Accept: image/*
+GET http://localhost:4000/static/faf3cb29-f2a3-4715-90a8-9b43a0371d42.jpg
+#Accept: image/*
