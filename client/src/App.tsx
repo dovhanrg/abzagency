@@ -72,7 +72,7 @@ function App() {
         getFetch<{
             success: boolean;
             positions: { name: string, id: number }[];
-        }>('http://164.92.235.193:4000/api/v1/api/v1/positions').then((data) => data.success && setPositions(data.positions));
+        }>('http://164.92.235.193:4000/api/v1/positions').then((data) => data.success && setPositions(data.positions));
     }, []);
 
     const registerUser = async (formData: FormData, token: string) => {
