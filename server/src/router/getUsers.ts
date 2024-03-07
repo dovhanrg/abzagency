@@ -18,8 +18,6 @@ const getUsers = async (req: Request<{}, any, {}, RequestType>, res: Response) =
 
     const totalUsers = await userRepository.count();
 
-    console.log(totalUsers);
-
     const skip = !Number.isNaN(Number(offset))
         ? Number(offset) : (Number(page ?? DEFAULT_OFFSET_PARAM) * Number(count ?? DEFAULT_COUNT_PARAM));
 
