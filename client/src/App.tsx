@@ -6,7 +6,7 @@ import {getFetch, postFetch} from "./http/fetchImpl";
 const IP_ADDR = process.env.REACT_APP_IP_ADDR;
 const API_PORT = process.env.REACT_APP_API_PORT;
 
-export const api_url = process.env.NODE_ENV === 'development' ? '' : `http://${IP_ADDR}:${API_PORT}`;
+export const api_url = process.env.NODE_ENV === 'development' ? '' : `https://${IP_ADDR}:${API_PORT}`;
 const initialLink = `${api_url}/api/v1/users?page=0&count=5`;
 const positionsUrl = `${api_url}/api/v1/positions`;
 const postUsersUrl = `${api_url}/api/v1/users`;
