@@ -4,7 +4,6 @@ import router from "./router";
 import initUsers from "./seeds/initUsers";
 import * as fs from "fs";
 import multer from "multer";
-import path from "node:path";
 import cors from 'cors';
 
 AppDataSource.initialize().then(async (data) => {
@@ -13,8 +12,8 @@ AppDataSource.initialize().then(async (data) => {
     .catch(error => console.log('ERROR: ', error));
 
 
-export const uploadOriginalImageDir = './uploads/original/';
-export const uploadCroppedImageDir = './uploads/cropped/';
+export const uploadOriginalImageDir = '/app/data/uploads/original/';
+export const uploadCroppedImageDir = '/app/data/uploads/cropped/';
 const port = 4000;
 const app = express();
 
@@ -28,9 +27,7 @@ app.use(express.urlencoded({extended: true}));
 app.use(express.text());
 app.use(cors());
 
-app.use('/static', express.static(path.join(__dirname, '..', 'uploads/cropped')));
-
-console.log(path.join(__dirname, '..', '..', 'client/build', 'index.html'));
+app.use('/image', express.static(uploadCroppedImageDir));
 
 app.use('/api/v1/', router);
 
@@ -55,5 +52,5 @@ app.use((err: multer.MulterError | Record<string, unknown>, req: Request, res: R
 
 
 app.listen(port, () => {
-    return console.log(`Express is listening at http://localhost:${port}`);
+    console.log(`Express is listening on port: ${port}`);
 });

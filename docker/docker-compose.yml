@@ -1,0 +1,54 @@
+version: "3"
+
+services:
+  database:
+    container_name: abz-agency-db
+    image: mysql:8.0
+    environment:
+      - MYSQL_ROOT_PASSWORD=secret
+      - MYSQL_DATABASE=abz-agency
+      - MYSQL_USER=admin
+      - MYSQL_PASSWORD=admin
+    volumes:
+      - ./init.sql:/data/db/init.sql
+      - mysql:/var/lib/mysql
+    restart: always
+    ports:
+      - "3306:3306"
+
+  server:
+    container_name: server
+    restart: always
+    environment:
+      - NODE_ENV=development
+      - IP_ADDR=164.92.235.193
+      - DB_HOST=database
+      - DB_PORT=3306
+      - DB_USERNAME=admin
+      - DB_PASSWORD=admin
+      - DATABASE=abz-agency
+    build:
+      context: ../server
+      dockerfile: ../server/Dockerfile
+    ports:
+      - "4000:4000"
+    volumes:
+#      - uploads:/app/data/uploads
+      - ../server/seeds:/app/data/uploads
+    depends_on:
+      - database
+
+  client:
+    container_name: client
+    restart: always
+    build:
+      context: ../client
+      dockerfile: ../client/Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - server
+
+volumes:
+  mysql:
+  uploads:

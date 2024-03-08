@@ -4,16 +4,16 @@ import './App.css';
 import {getFetch, postFetch} from "./http/fetchImpl";
 
 const IP_ADDR = process.env.REACT_APP_IP_ADDR;
-const API_PORT = process.env.REACT_APP_API_PORT;
 
-export const api_url = process.env.NODE_ENV === 'development' ? '' : `http://${IP_ADDR}:${API_PORT}`;
+
+export const api_url = process.env.NODE_ENV !== 'production' ? 'http://localhost:4000' : `https://${IP_ADDR}`;
+// export const api_url = 'http://localhost:4000';
 const initialLink = `${api_url}/api/v1/users?page=0&count=5`;
 const positionsUrl = `${api_url}/api/v1/positions`;
 const postUsersUrl = `${api_url}/api/v1/users`;
 const tokenUrl = `${api_url}/api/v1/token`;
 
-console.log(api_url);
-const getPhotoSrcUrl = (src: string) => `${api_url}${src}`;
+console.log(api_url, process.env);
 
 type User = {
     position_id: number,
@@ -198,7 +198,7 @@ function App() {
                             <p>Phone: {user.phone}</p>
                             <p>Position: {user.position}</p>
                             <p>
-                                <img src={getPhotoSrcUrl(user.photo)} alt="photo"/>
+                                <img src={user.photo} alt="photo"/>
                             </p>
                         </div>);
                     })}

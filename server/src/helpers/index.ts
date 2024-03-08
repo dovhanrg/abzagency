@@ -25,5 +25,5 @@ export const getPrevPageUrl = (currentPage?: string, count?: string) => {
 }
 
 export const getPhotoSrc = (photoId: string) => {
-    return `/static/${photoId}.jpg`;
+    return `${api_url}/image/${photoId}.jpg`;
 }

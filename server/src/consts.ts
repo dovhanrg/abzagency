@@ -1,9 +1,8 @@
 
-const IP_ADDR = process.env.IP_ADDR || 'localhost';
-const API_PORT = process.env.API_PORT || 40000;
-
-const api_url = process.env.NODE_ENV === 'development' ? '' : `http://164.92.235.193:4000`;
-
-export {
-    api_url,
-}
+const ipAddress = process.env.IP_ADDR || 'localhost';
+export const dbHost = process.env.DB_HOST || 'localhost';
+export const dbPort = Number(process.env.DB_PORT ?? 3306);
+export const  dbUsername = process.env.DB_USERNAME || 'admin';
+export const dbUserPassword = process.env.DB_PASSWORD || 'admin';
+export const database = process.env.DATABASE || "abz-agency";
+export const api_url = process.env.NODE_ENV !== 'production' ? 'http://localhost:4000' : `https://${ipAddress}`;

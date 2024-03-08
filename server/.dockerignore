@@ -1,0 +1,9 @@
+.dockerignore
+
+dist
+
+http
+
+node_modules
+
+uploads

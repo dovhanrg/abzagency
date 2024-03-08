@@ -5,8 +5,9 @@
   "main": "dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "NODE_ENV=development tsc-watch --onSuccess \"node dist/index.js\"",
-    "build": "npm run clean && NODE_ENV=production npx tsc",
+    "start": "tsc-watch --onSuccess \"node dist/index.js\"",
+    "build": "npm run clean && npx tsc",
+    "srart:production": "node dist/index.js",
     "clean": "rimraf dist"
   },
   "keywords": [],
