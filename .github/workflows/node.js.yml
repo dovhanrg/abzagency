@@ -1,19 +1,19 @@
-name: abz
-
-on: [push]
-
-jobs:
-  build:
-
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v4
-      - name: Build nodejs server
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20.x'
-      - run: npm ci
-        working-directory: ./server
-      - run: npm run build
-        working-directory: ./server
+#name: abz
+#
+#on: [push]
+#
+#jobs:
+#  build:
+#
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#      - uses: actions/checkout@v4
+#      - name: Build nodejs server
+#        uses: actions/setup-node@v4
+#        with:
+#          node-version: '20.x'
+#      - run: npm ci
+#        working-directory: ./server
+#      - run: npm run build
+#        working-directory: ./server
