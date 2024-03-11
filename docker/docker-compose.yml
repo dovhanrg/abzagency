@@ -13,8 +13,6 @@ services:
       - ./init.sql:/data/db/init.sql
       - mysql:/var/lib/mysql
     restart: always
-    ports:
-      - "3306:3306"
 
   server:
     container_name: server
@@ -33,7 +31,6 @@ services:
     ports:
       - "4000:4000"
     volumes:
-#      - uploads:/app/data/uploads
       - ../server/seeds:/app/data/uploads
     depends_on:
       - database
