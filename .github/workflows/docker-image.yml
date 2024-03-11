@@ -57,6 +57,9 @@ jobs:
       - name: show env
         run: env
 
+      - name: show vars
+        run: vars
+
       - name: show dir
         run: ls -al
 
@@ -71,8 +74,8 @@ jobs:
 
       - name: Connecting to remote server
         run: |
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" | tr -d '\r' | ssh-add -
-          ssh -o "StrictHostKeyChecking accept-new" deploy-bot@${{ env.SERVER_ADDRESS }} "echo 'Logging in'"
+          ${{ secrets.SSH_PRIVATE_KEY }} | tr -d '\r' | ssh-add -
+          ssh -o "StrictHostKeyChecking accept-new" deploy-bot@${{ vars.SERVER_ADDRESS }} "echo 'Logging in'"
 
 
 
