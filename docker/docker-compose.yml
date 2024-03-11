@@ -4,7 +4,6 @@ services:
   database:
     container_name: abz-agency-db
     image: mysql:8.0
-    command: echo ${MYSQL_ROOT_PASSWORD} ${DATABASE} {DB_USERNAME} ${DB_PASSWORD}
     environment:
       - MYSQL_ROOT_PASSWORD="${MYSQL_ROOT_PASSWORD}"
       - MYSQL_DATABASE="${DATABASE}"
