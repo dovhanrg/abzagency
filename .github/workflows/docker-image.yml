@@ -17,6 +17,7 @@ jobs:
       - uses: mr-smithers-excellent/docker-build-push@v6
         name: Build & push Docker image
         with:
+          platform: linux/amd64
           image: dovhanrg/abz-server
           tags: latest, ${{ github.sha }}
           registry: docker.io
@@ -37,6 +38,7 @@ jobs:
       - uses: mr-smithers-excellent/docker-build-push@v6
         name: Build & push Docker image
         with:
+          platform: linux/amd64
           image: dovhanrg/abz-client
           tags: latest, ${{ github.sha }}
           registry: docker.io
@@ -55,17 +57,8 @@ jobs:
       - build-client
 
     steps:
-      - name: show env
-        run: env
-
-      - name: show dir
-        run: ls -al
-
       - name: Check out code
         uses: actions/checkout@v4
-
-      - name: show dir after checkout
-        run: ls -al
 
       - name: Test ssh-agent and upload docker-compose.yml
         working-directory: ./docker
