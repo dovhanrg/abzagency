@@ -78,12 +78,11 @@ jobs:
         run: |
           echo "secrets and vars"
           echo ${{ vars.SERVER_ADDRESS }}
-          ${{ secrets.SSH_PRIVATE_KEY }}
-          ${{ vars.SERVER_ADDRESS }}
+          echo ${{ secrets.SSH_PRIVATE_KEY }}
 
       - name: Connecting to remote server
         run: |
-          ${{ secrets.SSH_PRIVATE_KEY }} | tr -d '\r' | ssh-add -
+          echo ${{ secrets.SSH_PRIVATE_KEY }} | tr -d '\r' | ssh-add -
           ssh -o "StrictHostKeyChecking accept-new" deploy-bot@${{ vars.SERVER_ADDRESS }} "echo 'Logging in'"
 
 
