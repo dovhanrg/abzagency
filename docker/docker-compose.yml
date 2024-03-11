@@ -18,13 +18,13 @@ services:
     image: dovhanrg/abz-server:latest
     restart: always
     environment:
-      - NODE_ENV="${NODE_ENV}"
-      - IP_ADDR="${IP_ADDR}"
+      - NODE_ENV="$NODE_ENV"
+      - IP_ADDR="$IP_ADDR"
       - DB_HOST=database
       - DB_PORT=3306
-      - DB_USERNAME="${DB_USERNAME}"
-      - DB_PASSWORD="${DB_PASSWORD}"
-      - DATABASE="${DATABASE}"
+      - DB_USERNAME="$DB_USERNAME"
+      - DB_PASSWORD="$DB_PASSWORD"
+      - DATABASE="$DATABASE"
     ports:
       - "4000:4000"
     volumes:

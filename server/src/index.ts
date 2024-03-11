@@ -9,7 +9,10 @@ import cors from 'cors';
 AppDataSource.initialize().then(async (data) => {
     await initUsers();
 })
-    .catch(error => console.log('ERROR: ', error));
+    .catch(error => {
+        console.log('ERROR: ', error);
+        throw Error(error);
+    });
 
 
 export const uploadOriginalImageDir = '/app/data/uploads/original/';
