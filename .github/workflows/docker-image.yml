@@ -4,7 +4,7 @@ on:
   push:
     branches: [ "main" ]
 
-jobs:
+#jobs:
 
 #  build-server:
 #
@@ -46,6 +46,7 @@ jobs:
 #          username: ${{ secrets.DOCKER_USERNAME }}
 #          password: ${{ secrets.DOCKER_PASSWORD }}
 
+jobs:
   deploy:
 
     runs-on: ubuntu-latest
