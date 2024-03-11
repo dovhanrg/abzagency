@@ -99,7 +99,7 @@ jobs:
           echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
           ls -al
           ssh -o "StrictHostKeyChecking accept-new" deploy-bot@${{ vars.SERVER_ADDRESS }} "echo 'Logging in'"
-          ssh deploy-bot@${{ vars.SERVER_ADDRESS }} docker-ps
+          ssh deploy-bot@${{ vars.SERVER_ADDRESS }} docker ps
           ssh deploy-bot@${{ vars.SERVER_ADDRESS }} MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD NODE_ENV=$NODE_ENV IP_ADDR=$IP_ADDR DB_USERNAME=$DB_USERNAME DB_PASSWORD=$DB_PASSWORD DATABASE=$DATABASE docker compose up -d
 
 
