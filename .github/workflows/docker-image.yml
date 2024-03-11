@@ -75,11 +75,15 @@ jobs:
         run: which ssh-agent
 
       - name: show vars
-        run: ${{ vars.SSH_PRIVATE_KEY }} ${{ vars.SERVER_ADDRESS }}
+        run: |
+          echo "secrets and vars"
+          echo ${{ vars.SERVER_ADDRESS }}
+          ${{ secrets.SSH_PRIVATE_KEY }}
+          ${{ vars.SERVER_ADDRESS }}
 
       - name: Connecting to remote server
         run: |
-          ${{ vars.SSH_PRIVATE_KEY }} | tr -d '\r' | ssh-add -
+          ${{ secrets.SSH_PRIVATE_KEY }} | tr -d '\r' | ssh-add -
           ssh -o "StrictHostKeyChecking accept-new" deploy-bot@${{ vars.SERVER_ADDRESS }} "echo 'Logging in'"
 
 
