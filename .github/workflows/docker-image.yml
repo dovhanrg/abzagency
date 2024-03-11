@@ -71,14 +71,6 @@ jobs:
           echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
           rsync -e "ssh -o StrictHostKeyChecking=no" -aP docker-compose.yml deploy-bot@${{ vars.SERVER_ADDRESS }}:/home/deploy-bot/
 
-      - name: show vars
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-        run: |
-          echo "secrets and vars"
-          echo ${{ vars.SERVER_ADDRESS }}
-          echo "$SSH_PRIVATE_KEY"
-
       - name: deploying updates
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
@@ -93,7 +85,7 @@ jobs:
           ls -al
           ssh -o "StrictHostKeyChecking accept-new" deploy-bot@${{ vars.SERVER_ADDRESS }} "echo 'Logging in'"
           ssh deploy-bot@${{ vars.SERVER_ADDRESS }} docker ps
-          ssh deploy-bot@${{ vars.SERVER_ADDRESS }} MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD NODE_ENV=$NODE_ENV IP_ADDR=$IP_ADDR DB_USERNAME=$DB_USERNAME DB_PASSWORD=$DB_PASSWORD DATABASE=$DATABASE docker compose up -d
+          ssh deploy-bot@${{ vars.SERVER_ADDRESS }} MYSQL_ROOT_PASSWORD="$MYSQL_ROOT_PASSWORD" NODE_ENV="$NODE_ENV" IP_ADDR="$IP_ADDR" DB_USERNAME="$DB_USERNAME" DB_PASSWORD="$DB_PASSWORD" DATABASE="$DATABASE" docker compose up -d --pull=always
 
 
 
