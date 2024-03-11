@@ -76,7 +76,7 @@ jobs:
           which ssh-agent
           eval $(ssh-agent -s)
           echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
-          rsync -aP docker-compose.yml deploy-bot@${{ vars.SERVER_ADDRESS }}:/home/deploy-bot/
+          -e "ssh -o StrictHostKeyChecking=no" rsync -aP docker-compose.yml deploy-bot@${{ vars.SERVER_ADDRESS }}:/home/deploy-bot/
 
       - name: show vars
         env:
