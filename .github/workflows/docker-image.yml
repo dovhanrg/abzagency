@@ -84,7 +84,7 @@ jobs:
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           NODE_ENV: production
-          IP_ADDR: ${{ secrets.DB_HOST }}
+          IP_ADDR: ${{ secrets.IP_ADDR }}
           DB_USERNAME: ${{ secrets.DB_USERNAME }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
           DATABASE: ${{ secrets.DATABASE }}
