@@ -39,7 +39,7 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - NODE_ENV="$NODE_ENV"
+      - NODE_ENV=$NODE_ENV
     depends_on:
       - server
 
