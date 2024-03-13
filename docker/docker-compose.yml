@@ -19,7 +19,7 @@ services:
     restart: always
     environment:
       - NODE_ENV="$NODE_ENV"
-      - IP_ADDR="$IP_ADDR"
+      - IP_ADDR=$IP_ADDR
       - DB_HOST=database
       - DB_PORT=3306
       - DB_USERNAME="$DB_USERNAME"
